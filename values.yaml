@@ -1,0 +1,64 @@
+namespace: fullstack-app
+
+# =====================
+# Ingress Configuration
+# =====================
+ingress:
+  enabled: true
+  host: localhost   # or your Minikube IP if not using localhost
+
+# =====================
+# MySQL Configuration
+# =====================
+mysql:
+  image: mysql:8.0
+  rootPassword: password
+  database: projectdb
+  service:
+    port: 3306
+    type: ClusterIP
+
+# =====================
+# Backend Configuration
+# =====================
+backend:
+  image: raunakhgnis/k8-backend:latest
+  replicas: 2
+  port: 2000
+  nodePort: 30025
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "500m"
+      memory: "256Mi"
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 50
+
+# =====================
+# Frontend Configuration
+# =====================
+frontend:
+  image: raunakhgnis/k8-frontend:latest
+  replicas: 2
+  port: 80
+  nodePort: 30080
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "500m"
+      memory: "256Mi"
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 50
+
+  # Point frontend to backend service
+  apiUrl: "/api"
