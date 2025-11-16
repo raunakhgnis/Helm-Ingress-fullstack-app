@@ -13,7 +13,7 @@ ingress:
 mysql:
   image: mysql:8.0
   rootPassword: password
-  database: projectdb
+  database: auctiondb
   service:
     port: 3306
     type: ClusterIP
@@ -22,7 +22,7 @@ mysql:
 # Backend Configuration
 # =====================
 backend:
-  image: raunakhgnis/k8-backend:latest
+  image: raunakhgnis/k8-backendonlineauctionhelm:latest
   replicas: 2
   port: 2000
   nodePort: 30025
@@ -43,7 +43,7 @@ backend:
 # Frontend Configuration
 # =====================
 frontend:
-  image: raunakhgnis/k8-frontend:latest
+  image: raunakhgnis/k8-frontendonlineauctionhelm:latest
   replicas: 2
   port: 80
   nodePort: 30080
